@@ -1,4 +1,5 @@
-﻿using LocalRentalsApi.Models;
+﻿using LocalRentalsApi.Data;
+using LocalRentalsApi.Models;
 using LocalRentalsApi.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +19,7 @@ namespace LocalRentalsApi
         [HttpGet]
         public IEnumerable<RentalDto> GetRentals()
         {
-            return new List<RentalDto>
-            {
-                new RentalDto{Id=1, Name="LR-01"},
-                new RentalDto{Id=2,Name="LR-02"}
-            };
+            return RentalData.rentalsList;
         }
     }
 }
