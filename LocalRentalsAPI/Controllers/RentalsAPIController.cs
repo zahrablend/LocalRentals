@@ -19,7 +19,16 @@ namespace LocalRentalsApi
         [HttpGet]
         public IEnumerable<RentalDto> GetRentals()
         {
+            // Returns all rentals on the list
             return RentalData.rentalsList;
+        }
+
+        [HttpGet("id:int")]
+        // [HttpGet("id")] => without type specified
+        public RentalDto GetRentals(int id)
+        {
+            // returning first record only
+            return RentalData.rentalsList.FirstOrDefault(v => v.Id == id);
         }
     }
 }
