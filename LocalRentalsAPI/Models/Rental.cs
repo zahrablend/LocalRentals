@@ -1,4 +1,4 @@
-﻿namespace LocalRentalsAPI.Models
+﻿namespace LocalRentalsApi.Models
 {
     public class Rental
     {
