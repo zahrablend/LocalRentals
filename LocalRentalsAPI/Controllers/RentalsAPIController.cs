@@ -2,11 +2,11 @@
 using LocalRentalsApi.Models;
 using LocalRentalsApi.Models.Dto;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
 
-namespace LocalRentalsApi
-    .Controllers
+namespace LocalRentalsApi.Controllers
 {
     // Add route to API mapped => app.MapControllers() in Program.cs
     [Route("api/RentalsApi")]
@@ -131,6 +131,33 @@ namespace LocalRentalsApi
             rental.MaxPeople = rentalDto.MaxPeople;
 
             return NoContent();
+        }
+        // With Nuget packages
+        [HttpPatch("{id:int}", Name = "UpdatePartialRental")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult UpdatePartialRental(int id, JsonPatchDocument<RentalDto> patchDto)
+        {
+            var rental = RentalData.rentalsList.Find(rental => rental.Id == id);
+            
+            if (patchDto == null || id == 0)
+            {
+                return BadRequest();
+            }
+
+            if (rental == null)
+            {
+                return BadRequest();
+            }
+            // Apply to rental object; anny errors store in ModelState
+            patchDto.ApplyTo(rental, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            return NoContent() ;
         }
     }
 }
