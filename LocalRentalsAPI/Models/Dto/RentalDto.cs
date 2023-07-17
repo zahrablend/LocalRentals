@@ -1,4 +1,6 @@
-﻿namespace LocalRentalsApi.Models.Dto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LocalRentalsApi.Models.Dto
 {
     // DTOs provide a wrapper between the entity or database model
     // and wgat is being exposed from API.
@@ -6,6 +8,9 @@
     {
         // Properties match Model properties
         public int Id { get; set; }
+        [Required]
+        [MinLength(5)]
+        [MaxLength(6)]
         public string? Name { get; set; }
     }
 }
