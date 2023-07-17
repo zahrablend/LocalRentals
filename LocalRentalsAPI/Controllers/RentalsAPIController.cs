@@ -73,7 +73,7 @@ namespace LocalRentalsApi
             //}
 
             // Check if rental name is unique
-            if (RentalData.rentalsList.Find(rental => rental.Name.ToLower() == rentalDto.Name.ToLower()) != null)
+            if (RentalData.rentalsList.Find(rental => rental?.Name?.ToLower() == rentalDto?.Name?.ToLower()) != null)
             {
                 // Add custom validation to model state
                 ModelState.AddModelError("CustomError", "Rental name already exists!");
@@ -111,6 +111,25 @@ namespace LocalRentalsApi
             }
 
             RentalData.rentalsList.Remove(rental);
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}", Name = "UpdateRental")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult UpdateRental(int id, [FromBody]RentalDto rentalDto)
+        {
+            var rental = RentalData.rentalsList.Find(rental => rental.Id == id);
+            
+            if (rentalDto == null || id != rentalDto.Id)
+            {
+                return BadRequest();
+            }
+
+            rental.Name = rentalDto.Name;
+            rental.Area = rentalDto.Area;
+            rental.MaxPeople = rentalDto.MaxPeople;
+
             return NoContent();
         }
     }
