@@ -17,11 +17,19 @@ namespace LocalRentalsApi.Controllers
     [ApiController]
     public class RentalsApiController : ControllerBase
     {
+        private readonly ILogger<RentalsApiController> _logger;
+
+        public RentalsApiController(ILogger<RentalsApiController> logger)
+        {
+            _logger = logger;
+        }
+
         // Specify GET endpoint for return statement
         [HttpGet]
         // Action result => implementation of Interface IAction instead of defining return type
         public ActionResult<IEnumerable<RentalDto>> GetRental()
         {
+            _logger.LogInformation("Getting all rentals");
             // Returns all rentals on the list
             return Ok(RentalData.rentalsList);
         }
@@ -48,6 +56,7 @@ namespace LocalRentalsApi.Controllers
             var rental = RentalData.rentalsList.Find(rental => rental.Id == id);
             if (id == 0)
             {
+                _logger.LogError("Get rental error with id" + id);
                 return BadRequest();
             }
             
